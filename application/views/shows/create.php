@@ -3,7 +3,7 @@ $validation_errors = validation_errors();
 
 if ($this->session->flashdata('message') != '')
 	{
-	    $flahsdata = $this->session->flashdata('message'); 
+	    $flashdata = $this->session->flashdata('message'); 
 	}
 ?>
 <?php if($validation_errors):?>
@@ -13,15 +13,15 @@ if ($this->session->flashdata('message') != '')
 </div>
 <?php endif ?>
 
-<?php if (isset($flahsdata)):?>
+<?php if (isset($flashdata)):?>
 <div class="alert alert-success">
 	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<?php echo $flahsdata ?>
+	<?php echo $flashdata ?>
 </div>
 <?php endif ?>
 
 <?php $attributes = array('class' => 'form-horizontal'); ?>
-<?php echo form_open("shows/create", $attributes);?>
+<?php echo form_open(site_url("shows/create"), $attributes);?>
 <fieldset>
 
 <!-- Form Name -->

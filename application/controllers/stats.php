@@ -59,7 +59,7 @@ class Stats extends Common_Auth_Controller {
 		$statuses_names = array();
 		
 		// this further auxiliary array is used later to bring back the actual task id into
-		// the main tasks container (is used to jQuery post operations in the frontend)
+		// the main tasks container (is used to reply jQuery POST requests from the frontend)
 		$tasks_names_ids = array();
 		
 		// in particular we extract the task_name and build an array only with those values
@@ -80,7 +80,7 @@ class Stats extends Common_Auth_Controller {
 		
 				
 		// we assign the values of $shot_statuses_names as keys for the main array that we create.
-		// this array will contaiall the info (shot count and total durations)
+		// this array will contain all the info (shot count and total durations)
 		$statuses_container = array_fill_keys(
 			$statuses_names, 0
 		);
@@ -91,7 +91,7 @@ class Stats extends Common_Auth_Controller {
 			array('tasks_count' => 0, 'shots_duration_frames' => 0, 'statuses' => $statuses_container)
 		);	
 		
-		// here we append to all the task arrays the id (from the $task_names_id array defined earlier)
+		// we append to all the task arrays the id (from the $task_names_id array defined earlier)
 		foreach ($tasks_container as $task => $value)
 		{
 			$tasks_container[$task]['task_id'] = $tasks_names_ids[$task];

@@ -3,14 +3,29 @@
 // may only work if this controller is not in a subfolder
 
 class Browser extends CI_Controller {
-
+	/*
     var $roots = array(
-        'mate' => '/Users/fsiddi/Dropbox/mate'
-        );
-    
+        'mate' => '/Users/fsiddi/Dropbox/caminandes_1'
+    );
+	*/    
+	var $roots = array();
+	
     public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('shows_model');
+		$this->load->model('settings_model');
+		
+		$shows = $this->shows_model->get_shows();
+				
+		//$current_show = $this->settings_model->get_settings('current_show');
+		
+		//roots = array();
+		
+		// we populate the shows array
+		foreach ($shows as $show) {
+			$this->roots[$show['show_id']] = $show['show_path'];
+		}	
 	}
 	
 

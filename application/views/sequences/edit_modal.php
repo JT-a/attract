@@ -7,7 +7,7 @@
 		</div>
 		<div class="modal-body">
 			<?php $attributes = array('id' => 'new-sequence'); ?>
-			<?php echo form_open("sequences/edit/" . $sequence['sequence_id'], $attributes);?>
+			<?php echo form_open(site_url("sequences/edit/" . $sequence['sequence_id']), $attributes);?>
 			<?php echo form_hidden('sequence_id', $sequence['sequence_id']); ?>
 			
 			<!-- Text input-->

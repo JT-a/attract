@@ -18,7 +18,7 @@
 		
 	<?php foreach ($shows as $show): ?>
     	<tr id="show_<?php echo $show['show_id'] ?>" <?php echo ($current_show['setting_value'] == $show['show_id'] ? "class=\"success\"" : ""); ?>>
-    		<td><a href="/shows/edit/<?php echo $show['show_id'] ?>"><?php echo $show['show_name'] ?></a></td>
+            <td><a href="<?php echo site_url("/shows/edit/{$show['show_id']}") ?>"><?php echo $show['show_name'] ?></a></td>
     		<td><?php echo $show['show_description'] ?></td>
     		<td><?php echo $show['show_path'] ?></td>
     		<td><a class="make-current btn btn-default btn-xs" href="#"><i class="glyphicon glyphicon-glass"></i> Make current</a></td>
@@ -36,7 +36,7 @@
 	</tfoot>
 </table>
 
-<a class="btn btn-default btn-lg btn-block" href="/shows/create">Add show</a>
+<a class="btn btn-default btn-lg btn-block" href="<?php echo site_url("/shows/create") ?>">Add show</a>
 </div><!--/span-->
 
 <script>

@@ -15,7 +15,7 @@ class Shots_model extends CI_Model {
 		{
 					
 			$this->db->select('shots.shot_id, shots.shot_name, shots.shot_description, shots.shot_duration'); 
-			$this->db->select('statuses.status_name, shots.shot_notes, attachments.attachment_path'); 
+			$this->db->select('statuses.status_name, statuses.status_color, shots.shot_notes, attachments.attachment_path'); 
 			$this->db->select('GROUP_CONCAT(DISTINCT shots_users.user_id SEPARATOR ",") as user_id', FALSE); 
 			$this->db->select('GROUP_CONCAT(tasks.task_name SEPARATOR ",") as task_names', FALSE);
 		    $this->db->from('shots');

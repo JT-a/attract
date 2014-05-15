@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: localhost (MySQL 5.5.29)
-# Database: attract-ci
-# Generation Time: 2013-11-22 00:26:07 +0000
+# Host: localhost (MySQL 5.5.33)
+# Database: conf
+# Generation Time: 2014-02-19 00:53:13 +0000
 # ************************************************************
 
 
@@ -134,7 +134,7 @@ LOCK TABLES `migrations` WRITE;
 
 INSERT INTO `migrations` (`version`)
 VALUES
-	(3);
+	(5);
 
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -215,6 +215,39 @@ VALUES
 UNLOCK TABLES;
 
 
+# Dump of table shot_comment_notifications
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `shot_comment_notifications`;
+
+CREATE TABLE `shot_comment_notifications` (
+  `shot_comment_notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `shot_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
+  `comment_id` int(11) unsigned NOT NULL,
+  `shot_comment_description` varchar(256) NOT NULL,
+  `was_seen` tinyint(1) NOT NULL,
+  PRIMARY KEY (`shot_comment_notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table shot_edit_notifications
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `shot_edit_notifications`;
+
+CREATE TABLE `shot_edit_notifications` (
+  `shot_edit_notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `shot_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
+  `shot_edit_description` int(11) unsigned NOT NULL,
+  `was_seen` tinyint(1) NOT NULL,
+  PRIMARY KEY (`shot_edit_notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table shot_tasks_users
 # ------------------------------------------------------------
 
@@ -250,6 +283,21 @@ CREATE TABLE `shots` (
 
 
 
+# Dump of table shots_attachments
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `shots_attachments`;
+
+CREATE TABLE `shots_attachments` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `attachment_id` int(11) unsigned NOT NULL,
+  `shot_id` int(11) unsigned NOT NULL,
+  `is_current` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table shots_files
 # ------------------------------------------------------------
 
@@ -262,15 +310,21 @@ CREATE TABLE `shots_files` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `shots_files` WRITE;
-/*!40000 ALTER TABLE `shots_files` DISABLE KEYS */;
 
-INSERT INTO `shots_files` (`id`, `shot_id`, `file_id`)
-VALUES
-	(1,1,1);
 
-/*!40000 ALTER TABLE `shots_files` ENABLE KEYS */;
-UNLOCK TABLES;
+# Dump of table shots_subscriptions
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `shots_subscriptions`;
+
+CREATE TABLE `shots_subscriptions` (
+  `shot_subscription_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `shot_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
+  `subscription_type` varchar(256) NOT NULL,
+  PRIMARY KEY (`shot_subscription_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 # Dump of table shots_tasks
@@ -321,7 +375,7 @@ LOCK TABLES `shows` WRITE;
 
 INSERT INTO `shows` (`show_id`, `show_name`, `show_description`, `show_path`)
 VALUES
-	(1,'Default Show','Default description','/show/path/');
+	(1,'Default Show','Default description','/path/to/files/');
 
 /*!40000 ALTER TABLE `shows` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -344,12 +398,12 @@ LOCK TABLES `statuses` WRITE;
 
 INSERT INTO `statuses` (`status_id`, `status_name`, `status_color`)
 VALUES
-	(1,'in_progress',NULL),
-	(2,'todo',NULL),
-	(3,'final_1',NULL),
-	(4,'fix',NULL),
-	(5,'review',NULL),
-	(6,'CBB',NULL);
+	(1,'in_progress','#F0AD4E'),
+	(2,'todo','#999999'),
+	(3,'final_1','#5CB85C'),
+	(4,'fix','#D9534F'),
+	(5,'review','#5BC0DE'),
+	(6,'CBB','#428BCA');
 
 /*!40000 ALTER TABLE `statuses` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -413,7 +467,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`)
 VALUES
-	(1,X'7F000001','admin','59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4','9462e8eee0','admin@admin.com','',NULL,NULL,NULL,1268889823,1385079851,1,'Admin','istrator','ADMIN','123-123-2123');
+	(1,X'7F000001','admin','59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4','9462e8eee0','admin@admin.com','',NULL,NULL,NULL,1268889823,1392768174,1,'Uncle','Rossi','Blender Institute','--');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -436,15 +490,8 @@ LOCK TABLES `users_groups` WRITE;
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`)
 VALUES
-	(11,1,1),
-	(12,1,2),
-	(13,1,3),
-	(15,2,2),
-	(19,3,1),
-	(20,3,2),
-	(22,4,1),
-	(23,4,2),
-	(24,2,1);
+	(14,1,1),
+	(15,1,2);
 
 /*!40000 ALTER TABLE `users_groups` ENABLE KEYS */;
 UNLOCK TABLES;

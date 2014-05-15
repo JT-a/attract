@@ -37,21 +37,54 @@ class Shots extends Common_Auth_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	function view($id)
+	function view($shot_id, $view_comments = FALSE)
 	{
+		// if we send a post variable 'view_comments' then we mark the unread notifications
+		// as read
+		
 		$this->load->helper('form');
 		$this->load->library('ion_auth');
 		$this->load->library('gravatar');
 		$this->load->model('comments_model');
 		$this->load->model('shots_attachments_model');
+		$this->load->model('shots_subscriptions_model');
+		$this->load->model('shot_comment_notifications_model');
 		
 		$user = $this->ion_auth->user()->row();
 		
 		$data['shots'] = $this->shots_model->get_shots();
-		$data['shot'] = $this->shots_model->get_shots($id);
-		$data['comments'] = $this->comments_model->get_shot_comments($id);
-		$data['previews'] = $this->shots_attachments_model->get_shot_attachments($id);
+		$data['shot'] = $this->shots_model->get_shots($shot_id);
+		$data['comments'] = $this->comments_model->get_shot_comments($shot_id);
+		$data['previews'] = $this->shots_attachments_model->get_shot_attachments($shot_id);
 		$data['gravatar'] = $this->gravatar->get_gravatar($user->email, NULL, 60);
+		
+		
+		if ($view_comments == 'view_comments')
+		{
+			$this->shot_comment_notifications_model->mark_shot_comment_notifications_as_read($shot_id);
+		}
+		
+		// we get the user subscriptions for the shot
+		$shots_subscriptions = $this->shots_subscriptions_model->get_shot_subscriptions($shot_id);
+			
+		// this is the array we are going to check against to see which subscriptions are available
+		$subscriptions = array(
+			'comments' => FALSE,
+			'edits' => FALSE);
+		
+		foreach ($shots_subscriptions as $subscription) 
+		{
+			if ($subscription['subscription_type'] == 'comments') 
+			{
+				$subscriptions['comments'] = TRUE;
+			} 
+			else if ($subscription['subscription_type'] == 'edits') 
+			{
+				$subscriptions['edits'] = TRUE;
+			}
+		}
+		$data['subscriptions'] = $subscriptions;
+		
 		$data['title'] = 'Shot';
 		$data['use_sidebar'] = TRUE;
 		$data['error'] = '';
@@ -267,6 +300,8 @@ class Shots extends Common_Auth_Controller {
 		$this->load->helper('form');
 		$this->load->model('comments_model');
 		$this->load->model('comments_attachments_model');
+		$this->load->model('shots_subscriptions_model');
+		$this->load->model('shot_comment_notifications_model');
 		$this->load->library('form_validation');
 		
 		$data['shots'] = $this->shots_model->get_shots();
@@ -285,7 +320,6 @@ class Shots extends Common_Auth_Controller {
 		}
 		else
 		{
-			
 			$this->load->model('attachments_model');
 		
 			$config['upload_path'] = './uploads/originals/';
@@ -331,14 +365,13 @@ class Shots extends Common_Auth_Controller {
 			    $config['new_image'] = $thumbnail_path.$medium_image;
 			    $config['width'] = 200;
 			    $config['height'] = 200;
-			
+
 			    $this->image_lib->initialize($config); 
-			
+
 			    if ( ! $this->image_lib->resize())
 			    {
 			    	echo $config['source_image'];
 			        echo $this->image_lib->display_errors();
-			        
 			    }
 			
 				$this->session->set_flashdata('message', 'Comment added to database!');
@@ -351,11 +384,18 @@ class Shots extends Common_Auth_Controller {
 			{
 				$this->comments_attachments_model->create_comment_attachment($attachment_id, $comment_id);
 			}
-
-			// we reload the page (will display flashcard if present)
-			redirect('/shots/view/'. $shot_id);
 			
+			// we get the user subscribed to comments for the shot
+			$users_subscribed_to_comments = $this->shots_subscriptions_model->get_users_subscribed_to_comments($shot_id);
+					
+			foreach ($users_subscribed_to_comments as $user) 
+			{
+				$this->shot_comment_notifications_model->create_shot_comment_notification($shot_id, $comment_id, $user['user_id'], 'New comment on shot');
+			}
+
 		}
+		// we reload the page (will display flashcard if present)
+		redirect('/shots/view/'. $shot_id);
 	}
 
 	function post_add_preview()
@@ -407,6 +447,8 @@ class Shots extends Common_Auth_Controller {
 		    $source_image = $data['upload_data']['raw_name'].$data['upload_data']['file_ext'];
 			
 			// Resize to medium
+			// We prepend the resolution value (400) so that in the frontend we can call any version
+			// by just prepend the desired value
 		    $medium_image = '400_'.$data['upload_data']['raw_name'].$data['upload_data']['file_ext'];
 		
 		    $config['source_image'] = $source_path.$source_image;
@@ -472,11 +514,29 @@ class Shots extends Common_Auth_Controller {
 	}
 
 	function delete_preview($attachment_id) 
-	{				
+	{
 		$this->shots_model->delete_preview($attachment_id);
 		
 		$this->session->set_flashdata('message', 'Attachment <strong>' . $attachment_id . '</strong> has been deleted, along with the relative data!');
 		redirect('/shots/');
+	}
+	
+	function post_subscribe_to_comments()
+	{
+		// We are going to call this mostly via AJAX
+		$this->load->model('shots_subscriptions_model');
+		$this->shots_subscriptions_model->create_shot_subscription();
+				
+		$this->output->set_status_header('200');
+	}
+
+	function post_unsubscribe_from_comments()
+	{
+		// We are going to call this mostly via AJAX
+		$this->load->model('shots_subscriptions_model');
+		$this->shots_subscriptions_model->delete_shot_subscription();
+				
+		$this->output->set_status_header('200');
 	}
 	
 }

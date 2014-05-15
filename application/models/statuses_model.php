@@ -19,6 +19,15 @@ class Statuses_model extends CI_Model {
 
 			return $query->result_array();
 		}
+		else 
+		{
+			$this->db->select('*');
+			$this->db->where('status_id', $id); 
+		    $this->db->from('statuses');
+		    $query = $this->db->get();
+			
+			return $query->row_array();
+		}
 	}
 	
 	function create_status()
@@ -37,6 +46,7 @@ class Statuses_model extends CI_Model {
 		
 		$data = array(
 			'status_name' => $this->input->post('status_name'),
+			'status_color' => $this->input->post('status_color')
 		);
 		
 		$this->db->where('status_id', $status_id);

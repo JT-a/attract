@@ -3,7 +3,7 @@
 <?php 
 if ($this->session->flashdata('message') != '')
 	{
-	    $flahsdata = $this->session->flashdata('message'); 
+	    $flashdata = $this->session->flashdata('message'); 
 	}
 ?>
 
@@ -11,10 +11,10 @@ if ($this->session->flashdata('message') != '')
 
 <h2><?php echo $title ?></h2>
 
-<?php if (isset($flahsdata)):?>
+<?php if (isset($flashdata)):?>
 <div class="alert alert-success">
 	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<?php echo $flahsdata ?>
+	<?php echo $flashdata ?>
 </div>
 <?php endif ?>
 
@@ -29,7 +29,7 @@ if ($this->session->flashdata('message') != '')
 		
 	<?php foreach ($sequences as $sequence): ?>
     	<tr class="sequence_<?php echo $sequence['sequence_id'] ?>">
-    		<td><a href="#" sequence="/sequences/edit/<?php echo $sequence['sequence_id'] ?>" data-toggle="modal"><?php echo $sequence['sequence_name'] ?></a></td>
+            <td><a href="#" sequence="<?php echo site_url("/sequences/edit/{$sequence['sequence_id']}") ?>" data-toggle="modal"><?php echo $sequence['sequence_name'] ?></a></td>
     		<td><?php echo $sequence['sequence_description'] ?></td>
     	</tr>
 	<?php endforeach ?>
@@ -43,7 +43,7 @@ if ($this->session->flashdata('message') != '')
 	</tfoot>
 </table>
 
-<a class="btn btn-default btn-lg btn-block" href="/sequences/create">Add sequence</a>
+<a class="btn btn-default btn-lg btn-block" href="<?php echo site_url("/sequences/create") ?>">Add sequence</a>
 </div><!--/span-->
 
 <script>

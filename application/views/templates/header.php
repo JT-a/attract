@@ -15,7 +15,7 @@
     <link href="<?php echo assets_url(); ?>/css/bootstrap-markdown.min.css" rel="stylesheet">
     <link href="<?php echo assets_url(); ?>/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="<?php echo assets_url(); ?>/css/attract.css" rel="stylesheet">
-    <link href="<?php echo assets_url(); ?>/css/shots.css" rel="stylesheet">
+    <link href="<?php echo assets_url(); ?>/css/bootstrap-colorpicker.min.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -54,19 +54,24 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="/" class="navbar-brand">Attract</a>
+          <a href="<?php echo site_url(); ?>" class="navbar-brand">Attract</a>
         </div>
         <div class="navbar-collapse collapse">
         	
         <ul class="nav navbar-nav navbar-right">
 
 	        <li id="fat-menu" class="dropdown">
-	          <a href="#" id="drop3" class="dropdown-toggle" data-toggle="dropdown"><?php echo $the_user->username ?> <b class="caret"></b></a>
+	          <a href="#" id="drop3" class="dropdown-toggle" data-toggle="dropdown">
+	          	<?php echo $the_user->email ?> 
+	          	<?php echo ($unread_comment_notifications > 0 ? ' <span class="badge">' . $unread_comment_notifications . '</span> ' : ''); ?>
+	          	<b class="caret"></b>
+	          </a>
 	          <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-	            <li><a role="menuitem" tabindex="-1" href="#">Settings</a></li>
-	            <li><a role="menuitem" tabindex="-1" href="#">More settings</a></li>
+	            <li><a role="menuitem" tabindex="-1" href="<?php echo site_url("/user/tasks/") ;?>">My tasks</a></li>
+	            <li><a role="menuitem" tabindex="-1" href="<?php echo site_url("/user/activity/") ;?>">Activity</a></li>
+	            <li><a role="menuitem" tabindex="-1" href="<?php echo site_url("/user/profile/") ;?>">Edit profile</a></li>
 	            <li class="divider"></li>
-	            <li><a role="menuitem" tabindex="-1" href="/auth/logout">Log out</a></li>
+	            <li><a role="menuitem" tabindex="-1" href="<?php echo site_url("/auth/logout/") ;?>">Log out</a></li>
 	          </ul>
 	    	</li>
 	    </ul>

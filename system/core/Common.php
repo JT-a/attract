@@ -231,7 +231,7 @@ if ( ! function_exists('get_config'))
 		// Fetch the config file
 		if ( ! file_exists($file_path))
 		{
-			exit('The configuration file does not exist.');
+			exit('The configuration file does not exist. Click <a href="install">here</a> to Install Attract.');
 		}
 
 		require($file_path);

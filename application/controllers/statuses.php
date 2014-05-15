@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Statuses extends Admin_Controller {
 
@@ -47,11 +47,57 @@ class Statuses extends Admin_Controller {
 
 			$this->session->set_flashdata('message', 'Status <strong>' . $status_name . '</strong> added to database!');
 
-			redirect('/statuses/create');
+			redirect('/statuses');
 			
+		}
+	}
+	
+	function edit($status_id, $async = FALSE)
+	{
+		$this->load->model('statuses_model');
+		
+		$data['status'] = $this->statuses_model->get_statuses($status_id);	
+		$data['title'] = 'Edit Status';
+		$data['use_sidebar'] = TRUE;
+		
+		if (empty($data['status']))
+		{
+			show_404();
+		}
+		
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		
+		$this->form_validation->set_rules('status_name', 'text', 'required');
+		
+		if ($this->form_validation->run() === FALSE)
+		{
+			if ($async)
+			{
+				$this->load->view('tasks/edit_ajax', $data);
+			}
+			else 
+			{
+				//$this->load->view('templates/header', $data);	
+				//$this->load->view('templates/sidebar', $data);
+				$this->load->view('statuses/edit_modal', $data);
+				//$this->load->view('templates/footer');	
+			}
+		}
+		else
+		{
+						
+			// first we create the new tasks, which should be assigned to a user right after the page is reloaded
+			$this->statuses_model->edit_status();
+			
+			$this->session->set_flashdata('message', 'Status <strong>' . $status_id . '</strong> has been updated!');
+			redirect('/statuses/');
 		}
 	}
 
 }
 
+/* End of file statuses.php */
+/* Location: ./application/controllers/statuses.php */
 

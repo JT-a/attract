@@ -33,7 +33,7 @@ class Core {
 		$handle = fopen($output_path,'w+');
 
 		// Chmod the file, in case the user forgot
-		@chmod($output_path,0777);
+		@chmod($output_path,0775);
 
 		// Verify file permissions
 		if(is_writable($output_path)) {
@@ -62,11 +62,11 @@ class Core {
 
 		$new = str_replace("%BASE_URL%",$data['base_url'],$config_file);
 
-		// Write the new database.php file
+		// Write the new config.php file
 		$handle = fopen($output_path,'w+');
 
 		// Chmod the file, in case the user forgot
-		@chmod($output_path,0777);
+		@chmod($output_path,0775);
 
 		// Verify file permissions
 		if(is_writable($output_path)) {

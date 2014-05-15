@@ -3,7 +3,7 @@
 <?php 
 if ($this->session->flashdata('message') != '')
 	{
-	    $flahsdata = $this->session->flashdata('message'); 
+	    $flashdata = $this->session->flashdata('message'); 
 	}
 ?>
 
@@ -12,10 +12,10 @@ if ($this->session->flashdata('message') != '')
 
 	<h2><?php echo $title ?></h2>
 	
-	<?php if (isset($flahsdata)):?>
+	<?php if (isset($flashdata)):?>
 	<div class="alert alert-success">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
-		<?php echo $flahsdata ?>
+		<?php echo $flashdata ?>
 	</div>
 	<?php endif ?>
 
@@ -32,7 +32,7 @@ if ($this->session->flashdata('message') != '')
 		<?php foreach ($tasks as $task): ?>
 	    	<tr>
 	    		<td><?php echo $task['task_id'] ?></td>
-	    		<td><a href="#" task="/tasks/edit/<?php echo $task['task_id'] ?>" data-toggle="modal"><?php echo $task['task_name'] ?></a></td>
+                        <td><a href="#" task="<?php echo site_url("/tasks/edit/{$task['task_id']}") ?>" data-toggle="modal"><?php echo $task['task_name'] ?></a></td>
 	    	</tr>
 		<?php endforeach ?>
 			
@@ -45,7 +45,7 @@ if ($this->session->flashdata('message') != '')
 		</tfoot>
 	</table>
 	
-	<a class="btn btn-default btn-lg btn-block" href="/tasks/create/">Add task</a>
+        <a class="btn btn-default btn-lg btn-block" href="<?php echo site_url("/tasks/create/"); ?>">Add task</a>
 	
 </div><!--/span-->
 

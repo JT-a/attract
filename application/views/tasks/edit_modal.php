@@ -7,7 +7,7 @@
 		</div>
 		<div class="modal-body">
 			<?php $attributes = array('id' => 'the-task'); ?>
-			<?php echo form_open("tasks/edit/" . $task['task_id'], $attributes);?>
+			<?php echo form_open(site_url("tasks/edit/" . $task['task_id']), $attributes);?>
 			<?php echo form_hidden('task_id', $task['task_id']); ?>
 			
 			<!-- Text input-->
@@ -20,7 +20,7 @@
 			<?php echo form_close();?>
 		</div>
 		<div class="modal-footer">
-			<a href="/tasks/delete/<?php echo $task['task_id']; ?>" id="delete" class="btn btn-danger pull-left"><i class="glyphicon glyphicon-fire icon-white"></i> Delete</a>
+                        <a href="<?php echo site_url("/tasks/delete/{$task['task_id']}"); ?>" id="delete" class="btn btn-danger pull-left"><i class="glyphicon glyphicon-fire icon-white"></i> Delete</a>
 			<button type="submit" id="submit" class="btn btn-primary" >Save Changes</button>
 			<button class="btn btn-default" data-dismiss="modal">Cancel</button>
 		</div><!-- /.modal-content -->

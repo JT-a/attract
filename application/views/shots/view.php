@@ -2,19 +2,27 @@
 $span_value = ($use_sidebar == TRUE ? "col-md-9" : "col-md-12"); 
 if ($this->session->flashdata('message') != '')
 {
-	$flahsdata = $this->session->flashdata('message'); 
+	$flashdata = $this->session->flashdata('message'); 
 }
 
 ?>
 <div class="<?php echo $span_value ?>">
 	
-	<h2>Shot <?php echo $shot['shot_name'] ?></h2>
+	<h2>
+		Shot <?php echo $shot['shot_name'] ?> 
+			<? if ($subscriptions['comments']): ?>
+			<button id="comments_unsubscribe" class="btn btn-default pull-right">Unsubscribe from comments</button>
+			<? else: ?>
+			<button id="comments_subscribe" class="btn btn-default pull-right">Subscribe to comments</button>
+			<? endif ?>
+		
+	</h2>
 	
 	
-	<?php if (isset($flahsdata)):?>
+	<?php if (isset($flashdata)):?>
 	<div class="alert alert-success">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
-		<?php echo $flahsdata ?>
+		<?php echo $flashdata ?>
 	</div>
 	<?php endif ?>
 	
@@ -42,7 +50,7 @@ if ($this->session->flashdata('message') != '')
 		
 			<?php endif ?>
 			
-			<?php echo form_open_multipart("shots/post_add_preview"); ?>
+			<?php echo form_open_multipart(site_url("shots/post_add_preview")); ?>
 			<form class="form">    
 				<?php echo form_hidden('shot_id', $shot['shot_id']);?>                   
 			    <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -66,7 +74,7 @@ if ($this->session->flashdata('message') != '')
 	
 	<div class="tabbable"> <!-- Only required for left/right tabs -->
 		<ul class="nav nav-tabs">
-			<li><a href="/shots/edit/<?php echo $shot['shot_id'] ?>">Edit</a></li>
+                    <li><a href="<?php echo site_url("/shots/edit/{$shot['shot_id']}") ?>">Edit</a></li>
 			<li class="active"><a href="#">Comments</a></li>
 		</ul>
 	</div>
@@ -140,6 +148,24 @@ if ($this->session->flashdata('message') != '')
 		$(this).html(test);
 	});
 	//console.log($('.thread_comment_body').html());
+	
+	$(document).on("click", "#comments_subscribe", function() {
+		$.post( "/shots/post_subscribe_to_comments/", { shot_id: <?php echo $shot['shot_id'] ?> , subscription_type: 'comments' })
+		.done(function( data ) {
+			console.log('Subscribed to comments');
+			$('#comments_subscribe').text('Unsubscribe from comments');
+			$('#comments_subscribe').attr('id', 'comments_unsubscribe');
+		});
+	});
+	
+	$(document).on("click", "#comments_unsubscribe", function() {
+		$.post( "/shots/post_unsubscribe_from_comments/", { shot_id: <?php echo $shot['shot_id'] ?> , subscription_type: 'comments' })
+		.done(function( data ) {
+			console.log('Unsubscribed from comments');
+			$('#comments_unsubscribe').text('Subscribe to comments');
+			$('#comments_unsubscribe').attr('id', 'comments_subscribe');
+		});
+	});
 
 </script>
 

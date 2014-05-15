@@ -2,17 +2,17 @@
 
 if ($this->session->flashdata('message') != '')
 {
-	$flahsdata = $this->session->flashdata('message'); 
+	$flashdata = $this->session->flashdata('message'); 
 }
 
 ?>
 
 <div class="<?php echo $span_value ?>">
 
-<?php if (isset($flahsdata)):?>
+<?php if (isset($flashdata)):?>
 <div class="alert alert-success">
 	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<?php echo $flahsdata ?>
+	<?php echo $flashdata ?>
 </div>
 <?php endif ?>
 
@@ -55,7 +55,7 @@ var make_status_dropdown = function(status) {
 	return markup;
 };
 
-
+// THIS FUNCTION IS UNUSED AT THE MOMENT
 var make_status_label = function(status) {
 	
 	// The following function generates a boostrap-style dropdown according
@@ -111,7 +111,8 @@ $(document).ready(function() {
     	"iDisplayLength": 50,
 		"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 			// we disable the status dropdown column
-			$('td:eq(3)', nRow).html(make_status_label(aData[3]));
+			// also, we are not parsing the status label, but we build it directly in the table
+			//$('td:eq(3)', nRow).html(make_status_label(aData[3]));
 			$('td:eq(1)', nRow).html(trim_string(aData[1], 40));
 		},
 		"aoColumns": [ 
@@ -279,16 +280,16 @@ $(document).ready(function() {
 	<tbody>
 	<?php foreach ($shots as $shot): ?>
     	<tr id="row_<?php echo $shot['shot_id'] ?>">
-    		<td><a href="/shots/view/<?php echo $shot['shot_id'] ?>"><?php echo $shot['shot_name'] ?></a></td>
+    		<td><a href="<?php echo site_url("shots/view/{$shot['shot_id']}") ?>"><?php echo $shot['shot_name'] ?></a></td>
     		<td><?php echo $shot['shot_description'] ?></td>
     		<td><?php echo $shot['shot_duration'] ?></td>
-    		<td><?php echo $shot['status_name']?></td> 
+    		<td><span class="label label-default" style="background-color:<?php echo $shot['status_color'] ?>"><?php echo $shot['status_name'] ?></span></td> 
     		<td><?php echo $shot['task_names'] ?></td>
     		<td><?php echo $shot['shot_notes'] ?></td>
     		<td><?php echo $shot['user_id']?> 
     			<!-- we temporarily disabled in-table shot editing, too much work for now -->
     			<!-- <a class="btn btn-default btn-xs edit-shot" href="#"><i class="icon-edit"></i> Edit</a> -->
-    			<a class="btn btn-default btn-xs" href="/shots/edit/<?php echo $shot['shot_id'] ?>"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+    			<a class="btn btn-default btn-xs" href="<?php echo site_url("shots/edit/{$shot['shot_id']}") ?>"><i class="glyphicon glyphicon-edit"></i> Edit</a>
     		</td>
     	</tr>
 	<?php endforeach ?>
@@ -307,7 +308,7 @@ $(document).ready(function() {
 	</tfoot>
 </table>
 
-<a class="btn btn-default btn-lg btn-block" data-toggle="modal" shot="/shots/create" href="#">Add shot</a>
+<a class="btn btn-default btn-lg btn-block" data-toggle="modal" shot="<?php echo site_url("shots/create")?>" href="#">Add shot</a>
 
 </div><!--/span-->
 

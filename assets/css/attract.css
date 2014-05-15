@@ -114,3 +114,13 @@ ul.files {
 tr.success .make-current {
 	display: none;
 }
+
+.table-striped>tbody>tr.seen_notification:nth-child(odd)>td,
+.table-striped>tbody>tr.seen_notification:nth-child(even)>td {
+	/*background-color: #DDD;*/
+	color: #CCC;
+}
+
+.seen_notification a {
+	color: #CCC;
+}

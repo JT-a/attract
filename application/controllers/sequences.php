@@ -1,6 +1,6 @@
 <?php
 
-class Sequences extends Admin_Controller {
+class Sequences extends Common_Auth_Controller {
 
 	public function __construct()
 	{

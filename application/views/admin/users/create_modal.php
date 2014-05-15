@@ -7,7 +7,7 @@
 		</div>
 		<div class="modal-body">
 			<?php $attributes = array('id' => 'new-user'); ?>
-			<?php echo form_open("admin/create_user/", $attributes);?>
+			<?php echo form_open(site_url("admin/create_user/"), $attributes);?>
 			
 			<!-- Text input-->
 			<div class="form-group">

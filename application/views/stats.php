@@ -35,7 +35,7 @@
 			
 			var target = $(this).parent().parent().next();
 			
-			$.post("/shots/post_index", { task_id: task_id, status_id: status_id } , function(data) {
+			$.post("<?php echo site_url('/shots/post_index')?>", { task_id: task_id, status_id: status_id } , function(data) {
 			  //$('.modal-body').html(data);
 			  //alert(data);
 			  

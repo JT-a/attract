@@ -5,7 +5,7 @@ $validation_errors = validation_errors();
 
 if ($this->session->flashdata('message') != '')
 	{
-	    $flahsdata = $this->session->flashdata('message'); 
+	    $flashdata = $this->session->flashdata('message'); 
 	}
 ?>
 <?php if($validation_errors):?>
@@ -15,15 +15,15 @@ if ($this->session->flashdata('message') != '')
 </div>
 <?php endif ?>
 
-<?php if (isset($flahsdata)):?>
+<?php if (isset($flashdata)):?>
 <div class="alert alert-success">
 	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<?php echo $flahsdata ?>
+	<?php echo $flashdata ?>
 </div>
 <?php endif ?>
 
 <?php $attributes = array('class' => 'form-horizontal'); ?>
-<?php echo form_open("sequences/edit/" . $sequence['sequence_id'], $attributes);?>
+<?php echo form_open(site_url("sequences/edit/" . $sequence['sequence_id']), $attributes);?>
 <?php echo form_hidden('sequence_id', $sequence['sequence_id']); ?>
 <fieldset>
 
@@ -54,7 +54,7 @@ if ($this->session->flashdata('message') != '')
 	<label class="control-label" for="submit">Submit</label>
 	<div class="controls">
 		<button id="submit" name="submit" class="btn btn-inverse">Edit sequence</button>
-		<a href="/sequences/" class="btn btn-warning">Cancel</a>
+                <a href="<?php echo site_url('/sequences/') ?>" class="btn btn-warning">Cancel</a>
 	</div>
 </div>
 
